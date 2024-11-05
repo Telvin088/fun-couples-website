@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@10.12.16/dist/framer-motion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-photo-gallery@8.0.0/dist/react-photo-gallery.min.js"></script>
+    <style>
+        .bottom-navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 40px; /* Increased top margin to fully display the buttons */
+        }
+        .bottom-navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+        .bottom-navbar li {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .bottom-navbar a {
+            text-decoration: none;
+            color: #333;
+            width: 100%;
+            display: block;
+        }
+        .bottom-navbar a:hover {
+            color: #666;
+        }
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        /* Added styles to center navbar items */
+        .bottom-navbar ul {
+            justify-content: center;
+        }
+        .bottom-navbar li {
+            margin-right: 0;
+            flex-basis: 25%;
+        }
+        .bottom-navbar a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Reduced font size of the overall text */
+        body {
+            font-size: 13px;
+        }
+        /* Adjusted form styles to ensure submit/save buttons are visible */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center; /* Centered the form items */
+        }
+        input, textarea {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%; /* Ensured input fields span the full width */
+        }
+        button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%; /* Ensured buttons span the full width */
+            margin-bottom: 20px; /* Added spacing at the bottom of the buttons */
+        }
+        button:hover {
+            background-color: #ff1493;
+        }
+        /* Added padding to the bottom of the container to avoid hiding the buttons */
+        .container {
+            padding-bottom: 120px; /* Increased padding to fully display the buttons and add spacing at the bottom */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Our Story</h1>
+        <section class="memories content-section active" id="memories">
+            <h2><span class="icon material-symbols-outlined">calendar_month</span> Memory Timeline</h2>
+            <ul id="memoriesList"></ul>
+            <form id="addMemoryForm">
+                <input type="text" id="newMemory" placeholder="Add a new memory...">
+                <button type="submit">Add Memory</button>
+            </form>
+        </section>
+
+        <section class="love-notes content-section" id="love-notes">
+            <h2><span class="icon material-symbols-outlined">favorite</span> Notes</h2>
+            <div id="notesList"></div>
+            <form id="addNoteForm">
+                <textarea id="newNote" placeholder="Write a love note..."></textarea>
+                <button type="submit">Send Note</button>
+            </form>
+        </section>
+
+        <section class="bucket-list content-section" id="bucket-list">
+            <h2><span class="icon material-symbols-outlined">check_box</span> Bucket</h2>
+            <ul id="bucketList"></ul>
+            <form id="addBucketItemForm">
+                <input type="text" id="newBucketItem" placeholder="Add a bucket list item...">
+                <button type="submit">Add Item</button>
+            </form>
+        </section>
+
+        <section class="photo-album content-section" id="photo-album">
+            <h2><span class="icon material-symbols-outlined">photo</span> Album</h2>
+            <div id="photoGallery"></div>
+        </section>
+    </div>
+    <nav class="bottom-navbar">
+        <ul>
+            <li>
+                <a href="#" class="nav-link" data-target="memories">
+                    <span class="nav-icon material-symbols-outlined">calendar_month</span>
+                    Memories
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link" data-target="love-notes">
+                    <span class="nav-icon material-symbols-outlined">favorite</span>
+                    Notes
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link" data-target="bucket-list">
+                    <span class="nav-icon material-symbols-outlined">check_box</span>
+                    Bucket
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link" data-target="photo-album">
+                    <span class="nav-icon material-symbols-outlined">photo</span>
+                    Album
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const targetId = link.getAttribute('data-target');
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
